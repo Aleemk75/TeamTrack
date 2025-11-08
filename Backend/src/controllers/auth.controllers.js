@@ -7,7 +7,8 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export const generateToken = (user) => {
-    return jwt.sign(
+
+  return jwt.sign(
         { id: user._id, email: user.email, role: user.role },
         JWT_SECRET,
         { expiresIn: "1h" }
@@ -74,13 +75,9 @@ export async function signup(req, res, next) {
         if (!user) {
             return res.status(500).send({ message: "Error creating user" });
         }
-        let data = {
-            id: user._id,
-            email: user.email,
-            role: user.role,
-        }
+      
 
-        let token = generateToken(data);
+        let token = generateToken(user);
         console.log(token);
 
         res.status(200).json({
@@ -118,12 +115,9 @@ export async function signin(req, res, next) {
         }
 
         if (await bcrypt.compare(password, user.password)) {
-            let data = {
-                id: user._id,
-                email: user.email,
-            }
-          
-            let token = generateToken(data);
+
+
+            let token = generateToken(user);
             console.log(token);
 
             res.status(200).json({

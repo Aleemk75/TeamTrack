@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
     title: {
-        String,
+        type: String,
         required: true,
     },
     description: {
-        String,
+        type: String,
     },
     status: {
         type: String,
@@ -16,15 +16,10 @@ const taskSchema = new Schema({
         default: 'pending'
     },
     dueDate: Date,
-    assignedTo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true, // which user is responsible
-    },
+
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
     }
 },
     { timestamps: true });

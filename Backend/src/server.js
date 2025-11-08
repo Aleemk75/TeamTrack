@@ -2,6 +2,8 @@ import express from "express"
 import {dbConnect} from "./DB/mongodb.js"
 import dotenv from "dotenv";
 import authRouter from "./routes/auth.routes.js";
+import adminRouter from "./routes/admin.routes.js";
+import taskRouter from "./routes/task.routes.js";
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
@@ -19,6 +21,8 @@ dbConnect()
 })
 
 app.use("/api/auth",authRouter);
+app.use("/api/admin",adminRouter);
+app.use("/api",taskRouter);
 
 app.get("/", (req, res) => {
     res.send("Welcome to Taskify Backend!");

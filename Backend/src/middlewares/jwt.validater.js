@@ -21,8 +21,11 @@ export const authJwtValidater = async (req, res, next) => {
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded.userId;
+    const userId = decoded.id;
+    // console.log(decoded);
+    
     const user = await User.findById(userId).select('-password');
+    // console.log("user in jwt middleware", user);
 
     if (!user) {
       return res.status(401).json({
@@ -35,6 +38,7 @@ export const authJwtValidater = async (req, res, next) => {
       userId: user._id,
       email: user.email,
       name: user.name,
+      role: user.role
     };
 
     next();
