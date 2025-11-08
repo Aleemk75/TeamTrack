@@ -1,0 +1,402 @@
+{
+	"info": {
+		"_postman_id": "9a995106-414b-45d7-80df-a1ecc0e05d6b",
+		"name": "TeamTrack Colllections",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44611118",
+		"_collection_link": "https://aleem-3503811.postman.co/workspace/TeamTrack~d7cc8876-a2ef-4ff6-aef9-7c82efcae7b9/collection/44611118-9a995106-414b-45d7-80df-a1ecc0e05d6b?action=share&source=collection_link&creator=44611118"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"An access token is returned\", () => {",
+									"    pm.expect(pm.response.json()).to.have.property('token')",
+									"    pm.expect(pm.response.json().token).to.be.a('string')",
+									"    // Set the collection-scope \"token\" variable to the token received from the API",
+									"    // This lets us use it in other requests",
+									"    pm.collectionVariables.set('token', pm.response.json().token)",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"AleemAdmin\",\r\n    \"email\":\"AleemAdmin@gmail.com\",\r\n    \"password\":\"aleemAdmin\",\r\n    \"role\":\"admin\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						},
+						"description": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection."
+					},
+					"response": []
+				},
+				{
+					"name": "Signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"A name is returned\", () => {",
+									"    pm.expect(pm.response.json()).to.have.property('name');",
+									"    pm.expect(pm.response.json().name).to.be.a('string');",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"demoUser@gmail.com\",\r\n    \"password\":\"demoUser\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/auth/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"signin"
+							]
+						},
+						"description": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Tasks",
+			"item": [
+				{
+					"name": "getUserTasks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('object');",
+									"});",
+									"",
+									"// Validate that the response has an arg object",
+									"pm.test(\"Response to have 'arg' object\", function () {",
+									"    pm.expect(pm.response.json()).to.have.property('args');",
+									"});",
+									"",
+									"// Validate that the response has headers object",
+									"pm.test(\"Response to have 'headers' object\", function () {",
+									"    pm.expect(pm.response.json()).to.have.property('headers');",
+									"});",
+									"",
+									"// Validate that the response has url property",
+									"pm.test(\"Response to have 'url' property\", function () {",
+									"    pm.expect(pm.response.json()).to.have.property('url');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGY2OTBmNjQ2N2NjZTBlMzhlZWJlMCIsImVtYWlsIjoiZGVtb1VzZXJAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjI2MjE2NDUsImV4cCI6MTc2MjYyNTI0NX0._WVGVo1CiNiy8fF4VVbigS5mA4BiOIXS9bGfMYNlVas",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/tasks/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"tasks",
+								""
+							]
+						},
+						"description": "The tests in this request validate that:\n\n- the response code is 200\n- the response is a JSON object\n- the response has an 'arg' object\n- the response has 'headers' object\n- the response has a 'URL' property"
+					},
+					"response": []
+				},
+				{
+					"name": "create Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json = pm.response.json();\r",
+									"\r",
+									"// Validate raw body sent in the request, be it form-data or JSON\r",
+									"pm.test(\"`form` should contain the correct form data\", function () {\r",
+									"    pm.expect(json.form).to.be.an('object');\r",
+									"    pm.expect(json.form.foo1).to.eql('bar1');\r",
+									"    pm.expect(json.form.foo2).to.eql('bar2');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGY2OTBmNjQ2N2NjZTBlMzhlZWJlMCIsImVtYWlsIjoiZGVtb1VzZXJAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjI2MjA1MjUsImV4cCI6MTc2MjYyNDEyNX0.3iSCYZJ4Yu5FY_WBdan6DNQ0PpGc-W2hLcG0n0UxtDM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"meeting \",\r\n    \"dueDate\": \"11/13/2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"tasks"
+							]
+						},
+						"description": "The tests in this request validate that the request body sent as form-data is valid."
+					},
+					"response": []
+				},
+				{
+					"name": "updateTask",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Response Code should be 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Run validations on response headers like Content-Type\r",
+									"pm.test(\"Content-Type should be JSON\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"const json = pm.response.json();\r",
+									"\r",
+									"// The response body, including individual attributes can be evaluated for correctness\r",
+									"pm.test(\"`args` should contain the correct query params\", function () {\r",
+									"    pm.expect(json.args).to.be.an('object');\r",
+									"    pm.expect(json.args.foo).to.eql('bar');\r",
+									"    pm.expect(json.args.baz).to.eql('value');\r",
+									"});\r",
+									"\r",
+									"// Non-trivial data types like Dates can also be tested against\r",
+									"pm.test(\"Date in the header should be valid\", function () {\r",
+									"    const parsedDate = new Date(pm.response.headers.get('Date'));\r",
+									"    pm.expect(parsedDate).to.be.a('date');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"demoUser\",\r\n    \"status\":\"in-progress\",\r\n    \"dueDate\":\"12/9/2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/tasks/690f74cb71af2481a86b79de",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"tasks",
+								"690f74cb71af2481a86b79de"
+							]
+						},
+						"description": "The tests in the request validate the response code and the data returned in the response is the same as the one being sent."
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTask",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGY2OTBmNjQ2N2NjZTBlMzhlZWJlMCIsImVtYWlsIjoiZGVtb1VzZXJAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjI2MjIxMjQsImV4cCI6MTc2MjYyNTcyNH0.W-OMKzF98UVmcePtdlT5EhippjmpxSpWlIxcRTlQRCA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/tasks/690f74cb71af2481a86b79de",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"tasks",
+								"690f74cb71af2481a86b79de"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "getAllTasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/admin/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"admin",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTasks",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/admin/tasks/690f750d71af2481a86b79e1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"admin",
+								"tasks",
+								"690f750d71af2481a86b79e1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
