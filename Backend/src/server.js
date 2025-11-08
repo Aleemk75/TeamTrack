@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import authRouter from "./routes/auth.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 import taskRouter from "./routes/task.routes.js";
+import cors from "cors";
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
@@ -12,6 +13,12 @@ const port = process.env.PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Add after imports
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+
 dbConnect()
 .then(()=>{
     console.log("DB connected");

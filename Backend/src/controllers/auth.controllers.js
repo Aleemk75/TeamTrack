@@ -111,7 +111,7 @@ export async function signin(req, res, next) {
 
         const user = await User.findOne({ email: email });
         if (!user) {
-            return res.status(404).send({ message: "Invalid email or password" })
+            return res.status(400).send({ message: "Invalid email or password" })
         }
 
         if (await bcrypt.compare(password, user.password)) {
